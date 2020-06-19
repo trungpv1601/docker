@@ -16,6 +16,8 @@ class DockerContainer
 
     public bool $daemonize = true;
 
+    public string $option = '';
+
     /** @var \Spatie\Docker\PortMapping[] */
     public array $portMappings = [];
 
@@ -121,14 +123,17 @@ class DockerContainer
         return $this;
     }
 
-    public function getStartCommand($option = ''): string
+    public function getStartCommand(): string
     {
-        return "docker run {$this->getExtraOptions()} {$this->image} {$option}";
+        if ($this->option != '') {
+            return "docker run {$this->getExtraOptions()} {$this->image} {$this->option}";
+        }
+        return "docker run {$this->getExtraOptions()} {$this->image}";
     }
 
-    public function start($option = ''): DockerContainerInstance
+    public function start(): DockerContainerInstance
     {
-        $command = $this->getStartCommand($option);
+        $command = $this->getStartCommand();
 
         $process = Process::fromShellCommandline($command);
 
@@ -180,5 +185,10 @@ class DockerContainer
         }
 
         return implode(' ', $extraOptions);
+    }
+
+    public function useOption(string $option)
+    {
+        return $this->option = $option;
     }
 }

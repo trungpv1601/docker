@@ -46,6 +46,17 @@ class DockerContainerInstance
         return $process;
     }
 
+    public function remove($force = true): Process
+    {
+        $fullCommand = "docker rm {$this->getShortDockerIdentifier()}" . $force ? ' -f' : '';
+
+        $process = Process::fromShellCommandline($fullCommand);
+
+        $process->run();
+
+        return $process;
+    }
+
     public function getName(): string
     {
         return $this->name;
@@ -90,7 +101,7 @@ class DockerContainerInstance
     {
         $publicKeyContents = trim(file_get_contents($pathToPublicKey));
 
-        $this->execute('echo \''.$publicKeyContents.'\' >> '.$pathToAuthorizedKeys);
+        $this->execute('echo \'' . $publicKeyContents . '\' >> ' . $pathToAuthorizedKeys);
 
         $this->execute("chmod 600 {$pathToAuthorizedKeys}");
         $this->execute("chown root:root {$pathToAuthorizedKeys}");
@@ -103,7 +114,7 @@ class DockerContainerInstance
         $process = Process::fromShellCommandline("docker cp {$fileOrDirectoryOnHost} {$this->getShortDockerIdentifier()}:{$pathInContainer}");
         $process->run();
 
-        if (! $process->isSuccessful()) {
+        if (!$process->isSuccessful()) {
             throw new ProcessFailedException($process);
         }
 

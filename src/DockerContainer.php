@@ -18,6 +18,8 @@ class DockerContainer
 
     public string $option = '';
 
+    public string $restartPolicy = '';
+
     /** @var \Spatie\Docker\PortMapping[] */
     public array $portMappings = [];
 
@@ -184,12 +186,23 @@ class DockerContainer
             $extraOptions[] = '--rm';
         }
 
+        if ($this->restartPolicy) {
+            $extraOptions[] = "--restart {$this->restartPolicy}";
+        }
+
         return implode(' ', $extraOptions);
     }
 
     public function useOption(string $option)
     {
         $this->option = $option;
+
+        return $this;
+    }
+
+    public function useRestartPolicy(string $restartPolicy = 'unless-stopped')
+    {
+        $this->restartPolicy = $restartPolicy;
 
         return $this;
     }

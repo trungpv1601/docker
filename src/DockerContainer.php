@@ -16,7 +16,7 @@ class DockerContainer
 
     public bool $daemonize = true;
 
-    public string $option = '';
+    public string $moreOption = '';
 
     public string $restartPolicy = '';
 
@@ -127,8 +127,8 @@ class DockerContainer
 
     public function getStartCommand(): string
     {
-        if ($this->option != '') {
-            return "docker run {$this->getExtraOptions()} {$this->image} {$this->option}";
+        if ($this->moreOption != '') {
+            return "docker run {$this->getExtraOptions()} {$this->image} {$this->moreOption}";
         }
         return "docker run {$this->getExtraOptions()} {$this->image}";
     }
@@ -193,9 +193,9 @@ class DockerContainer
         return implode(' ', $extraOptions);
     }
 
-    public function useOption(string $option)
+    public function useOption(string $moreOption)
     {
-        $this->option = $option;
+        $this->moreOption = $moreOption;
 
         return $this;
     }

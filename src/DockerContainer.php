@@ -121,20 +121,20 @@ class DockerContainer
         return $this;
     }
 
-    public function getStartCommand(): string
+    public function getStartCommand($option = ''): string
     {
-        return "docker run {$this->getExtraOptions()} {$this->image}";
+        return "docker run {$this->getExtraOptions()} {$this->image} {$option}";
     }
 
-    public function start(): DockerContainerInstance
+    public function start($option = ''): DockerContainerInstance
     {
-        $command = $this->getStartCommand();
+        $command = $this->getStartCommand($option);
 
         $process = Process::fromShellCommandline($command);
 
         $process->run();
 
-        if (! $process->isSuccessful()) {
+        if (!$process->isSuccessful()) {
             throw CouldNotStartDockerContainer::processFailed($this, $process);
         }
 

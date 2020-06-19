@@ -189,6 +189,8 @@ class DockerContainer
 
     public function useOption(string $option)
     {
-        return $this->option = $option;
+        $this->option = $option;
+
+        return $this;
     }
 }

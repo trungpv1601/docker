@@ -57,9 +57,9 @@ class DockerContainerInstance
         return $process;
     }
 
-    public function logs(): string
+    public function logs($tail = 100): string
     {
-        $fullCommand = "docker logs {$this->getShortDockerIdentifier()}";
+        $fullCommand = "docker logs --tail {$tail} {$this->getShortDockerIdentifier()}";
 
         $process = Process::fromShellCommandline($fullCommand);
 

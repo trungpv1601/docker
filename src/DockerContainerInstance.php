@@ -69,7 +69,7 @@ class DockerContainerInstance
             throw new \Exception('Can\'t get logs from container.');
         }
 
-        return $process->getOutput();
+        return $process->getErrorOutput();
     }
 
     public function getName(): string

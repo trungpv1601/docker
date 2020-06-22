@@ -48,7 +48,7 @@ class DockerContainerInstance
 
     public function remove($force = true): Process
     {
-        $fullCommand = "docker rm {$this->getShortDockerIdentifier()}" . $force ? ' -f' : '';
+        $fullCommand = "docker rm {$this->getShortDockerIdentifier()}" . ($force ? ' -f' : '');
 
         $process = Process::fromShellCommandline($fullCommand);
 

@@ -57,6 +57,21 @@ class DockerContainerInstance
         return $process;
     }
 
+    public function logs(): string
+    {
+        $fullCommand = "docker logs {$this->getShortDockerIdentifier()}";
+
+        $process = Process::fromShellCommandline($fullCommand);
+
+        $process->run();
+
+        if (!$process->isSuccessful()) {
+            throw new \Exception('Can\'t get logs from container.');
+        }
+
+        return $process->getOutput();
+    }
+
     public function getName(): string
     {
         return $this->name;

@@ -10,14 +10,14 @@ class DockerContainerInstance
 {
     use Macroable;
 
-    private DockerContainer $config;
+    private $config;
 
     private string $dockerIdentifier;
 
     private string $name;
 
     public function __construct(
-        DockerContainer $config,
+        $config,
         string $dockerIdentifier,
         string $name
     ) {
@@ -77,7 +77,7 @@ class DockerContainerInstance
         return $this->name;
     }
 
-    public function getConfig(): DockerContainer
+    public function getConfig()
     {
         return $this->config;
     }

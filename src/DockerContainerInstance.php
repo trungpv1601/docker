@@ -16,6 +16,8 @@ class DockerContainerInstance
 
     private string $name;
 
+    private bool $sudo = false;
+
     public function __construct(
         DockerContainer $config,
         string $dockerIdentifier,
@@ -37,7 +39,7 @@ class DockerContainerInstance
 
     public function stop(): Process
     {
-        $fullCommand = "docker stop {$this->getShortDockerIdentifier()}";
+        $fullCommand = ($this->sudo ? 'sudo ' : '') . "docker stop {$this->getShortDockerIdentifier()}";
 
         $process = Process::fromShellCommandline($fullCommand);
 
@@ -46,9 +48,9 @@ class DockerContainerInstance
         return $process;
     }
 
-    public function remove($force = true): Process
+    public function remove($force = true, $sudo = false): Process
     {
-        $fullCommand = "docker rm {$this->getShortDockerIdentifier()}" . ($force ? ' -f' : '');
+        $fullCommand = ($this->sudo ? 'sudo ' : '') . "docker rm {$this->getShortDockerIdentifier()}" . ($force ? ' -f' : '');
 
         $process = Process::fromShellCommandline($fullCommand);
 
@@ -129,6 +131,12 @@ class DockerContainerInstance
             throw new ProcessFailedException($process);
         }
 
+        return $this;
+    }
+
+    public function useSudo() : self
+    {
+        $this->sudo = true;
         return $this;
     }
 }

@@ -59,7 +59,7 @@ class DockerContainerInstance
         return $process;
     }
 
-    public function logs($tail = 100): string
+    public function logs($tail = 100): Process
     {
         $fullCommand = "docker logs --tail {$tail} {$this->getShortDockerIdentifier()}";
 
@@ -67,7 +67,7 @@ class DockerContainerInstance
 
         $process->run();
 
-        return $process->getErrorOutput();
+        return $process;
     }
 
     public function getName(): string

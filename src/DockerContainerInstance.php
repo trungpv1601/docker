@@ -65,10 +65,6 @@ class DockerContainerInstance
 
         $process->run();
 
-        if (!$process->isSuccessful()) {
-            throw new \Exception('Can\'t get logs from container.');
-        }
-
         return $process->getErrorOutput();
     }
 

@@ -48,7 +48,7 @@ class DockerContainerInstance
         return $process;
     }
 
-    public function remove($force = true, $sudo = false): Process
+    public function remove($force = true): Process
     {
         $fullCommand = ($this->sudo ? 'sudo ' : '') . "docker rm {$this->getShortDockerIdentifier()}" . ($force ? ' -f' : '');
 
@@ -61,7 +61,7 @@ class DockerContainerInstance
 
     public function logs($tail = 100): Process
     {
-        $fullCommand = "docker logs --tail {$tail} {$this->getShortDockerIdentifier()}";
+        $fullCommand = ($this->sudo ? 'sudo ' : '') . "docker logs --tail {$tail} {$this->getShortDockerIdentifier()}";
 
         $process = Process::fromShellCommandline($fullCommand);
 
@@ -72,7 +72,7 @@ class DockerContainerInstance
 
     public function status(): Process
     {
-        $fullCommand = "docker container inspect -f '{{.State.Status}}' {$this->getShortDockerIdentifier()}";
+        $fullCommand = ($this->sudo ? 'sudo ' : '') . "docker container inspect -f '{{.State.Status}}' {$this->getShortDockerIdentifier()}";
 
         $process = Process::fromShellCommandline($fullCommand);
 

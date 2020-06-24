@@ -70,7 +70,7 @@ class DockerContainerInstance
         return $process;
     }
 
-    public function status(): string
+    public function status(): Process
     {
         $fullCommand = "docker container inspect -f '{{.State.Status}}' {$this->getShortDockerIdentifier()}";
 
@@ -78,7 +78,7 @@ class DockerContainerInstance
 
         $process->run();
 
-        return $process->getOutput();
+        return $process;
     }
 
     public function getName(): string

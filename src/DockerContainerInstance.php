@@ -70,6 +70,17 @@ class DockerContainerInstance
         return $process;
     }
 
+    public function status(): string
+    {
+        $fullCommand = "docker container inspect -f '{{.State.Status}}' {$this->getShortDockerIdentifier()}";
+
+        $process = Process::fromShellCommandline($fullCommand);
+
+        $process->run();
+
+        return $process->getOutput();
+    }
+
     public function getName(): string
     {
         return $this->name;
